@@ -22,7 +22,7 @@ planemo --version
 
 echo "Setting up jenkins test script and retrieving API keys"
 
-cd jenkins-testing
+cd ${WORKSPACE}/jenkins-testing
 
 echo "Starting job"
 
