@@ -22,22 +22,7 @@ planemo --version
 
 echo "Setting up jenkins test script and retrieving API keys"
 
-if [ ! -d "jenkins-testing/" ]
-then
-	git clone https://github.com/mvdbeek/jenkins-testing.git
-fi
-
-if [ ! -d "lab-coding/" ]
-then
-    hg clone https://mvdbeek:${bitbucket_pw}@bitbucket.org/mvdbeek/lab-coding
-fi
-
-cd lab-coding
-hg pull -u https://mvdbeek:${bitbucket_pw}@bitbucket.org/mvdbeek/lab-coding
-cd ../
-
 cd jenkins-testing
-git pull && git checkout
 
 echo "Starting job"
 
@@ -47,14 +32,14 @@ if [ "$TARGET" == "LOCAL" ];
 then
     python ./test-repo.py shed_test --tool_dirs ${WORKSPACE}/packages ${WORKSPACE}/tools \
        --report_dir ${WORKSPACE}/reports --build_number ${BUILD_NUMBER} --cores 4 \
-       --api_keys ${WORKSPACE}/lab-coding/api_keys/api_keys.yaml  --shed_target https://lbcd41.snv.jussieu.fr/toolshed/ \
+       --api_keys ${WORKSPACE}/internals/api_keys/api_keys.yaml  --shed_target https://lbcd41.snv.jussieu.fr/toolshed/ \
        ${SKIP_TEST}
 
 elif [ "$TARGET" == "TESTTOOLSHED" ];
 then
       python ./test-repo.py shed_test --tool_dirs ${WORKSPACE}/packages ${WORKSPACE}/tools \
        --report_dir ${WORKSPACE}/reports --build_number ${BUILD_NUMBER} --cores 4 \
-       --api_keys ${WORKSPACE}/lab-coding/api_keys/api_keys.yaml  --shed_target testtoolshed \
+       --api_keys ${WORKSPACE}/internals/api_keys/api_keys.yaml  --shed_target testtoolshed \
       ${SKIP_TEST}
 else
       echo "Choose local or testtoolshed"
